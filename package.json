@@ -1,0 +1,23 @@
+{
+  "name": "nuxt-blog-service2",
+  "version": "1.0.0",
+  "description": "My stunning Nuxt.js project",
+  "author": "mk",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "element-ui": "^2.4.11",
+    "lodash.clonedeep": "^4.5.0",
+    "moment": "^2.24.0",
+    "nuxt": "^2.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
