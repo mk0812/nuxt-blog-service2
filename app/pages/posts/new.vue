@@ -1,15 +1,15 @@
 <template>
   <section class="container posts-page">
-    <el-card style="flex:1;">
-      <div class="clearfix" slot="header">
-        <el-input placeholder="タイトルを入力" v-model="formData.title"></el-input>
+    <el-card style="flex: 1">
+      <div slot="header" class="clearfix">
+        <el-input placeholder="タイトルを入力" v-model="formData.title" />
       </div>
       <div>
-        <el-input placeholder="本文を入力" type="textarea" rows="15" v-model="formData.body"></el-input>
+        <el-input placeholder="本文を入力……" type="textarea" rows="15" v-model="formData.body" />
       </div>
-      <div class="text-right" style="margin-top:16px;">
+      <div class="text-right" style="margin-top: 16px;">
         <el-button type="primary" @click="publish" round>
-          <span class="el-icon-upload2"></span>
+          <span class="el-icon-upload2" />
           <span>Publish</span>
         </el-button>
       </div>
@@ -18,13 +18,14 @@
 </template>
 
 <script>
-import {mapGetters,mapActions} from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
-  asyncData({redirect,store}){
-    if(!store.getters['user']){
+  asyncData({ redirect, store }) {
+    if (!store.getters['user']) {
       redirect('/')
     }
-    return{
+    return {
       formData: {
         title: '',
         body: ''
@@ -35,16 +36,16 @@ export default {
     ...mapGetters(['user'])
   },
   methods: {
-    publish(){
+    async publish() {
       const payload = {
-        user : this.user,
-        ...this.formData,
+        user: this.user,
+        ...this.formData
       }
-      await this.publishPost({payload})
+      await this.publishPost({ payload })
       this.$router.push('/posts')
     },
-    ...mapActions('users',['updateUser']),
-    ...mapActions('posts',['publishPost'])
+    ...mapActions('users', ['updateUser']),
+    ...mapActions('posts', ['publishPost'])
   }
 }
 </script>
