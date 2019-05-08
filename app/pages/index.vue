@@ -21,8 +21,14 @@
 </template>
 
 <script>
+import {mapGetters,mapActions} from 'vuex'
+import Cookies from 'universal-cookie'
+
 export default {
-  asyncData() {
+  asyncData({redirect,store}) {
+    if(store.getter['user']){
+      redirect('/posts/')
+    }
     return{
       isCreateMode: false,
       formData: {
@@ -33,7 +39,55 @@ export default {
   computed: {
     buttonText(){
       return this.isCreateMode ? '新規作成' : 'ログイン'
-    }
+    },
+    ...mapGetters(['user'])
+  },
+  methods: {
+    async handleClickSubmit(){
+      const cookies = new Cookies()
+      if(this.isCreateMode){
+        try{
+          await this.register({...this.formData})
+          this.$notify({
+            type : 'success',
+            title : 'アカウント作成完了',
+            message : `${this.formData}として登録しました`,
+            position : 'bottom-right',
+            duration : 1000
+          })
+          cookies.set('user',JSON.stringify(this.user))
+          this.$router.push('/posts/')
+        }catch(e){
+          this.$notify.error({
+            title : 'アカウント作成失敗',
+            message : '不正なユーザーです',
+            position : 'bottom-right',
+            duration : 1000
+          }) 
+        }
+      }else{
+        try{
+          await this.login({...this.formData})
+          this.$notify({
+            type : 'success',
+            title : 'ログイン成功',
+            message : `${this.formData}として登録しました`,
+            position : 'bottom-right',
+            duration : 1000
+          })
+          cookies.set('user',JSON.stringify(this.user))
+          this.$router.push('/posts/') 
+        }catch(e){
+          this.$notify.error({
+            title : 'アカウント作成失敗',
+            message : '不正なユーザーです',
+            position : 'bottom-right',
+            duration : 1000
+          })
+        }
+      }
+    },
+    ...mapActions(['login','register'])
   }
 }
 </script>
